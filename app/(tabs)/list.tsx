@@ -1,18 +1,24 @@
-import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
+interface Item {
+    id: string,
+    label?: string
+}
+
 export default function AboutScreen() {
-  const [items, setItems] = useState([])
- 
+  const [items, setItems] = useState<Item[]>([])
+  console.log("On render le component")
   useEffect(() => {
     const fetchBoxes = async () => {
-        const querySnapshot = await getDocs(collection(db, 'boxes'));
+        const querySnapshot = await getDocs(collection(db, 'area'));
         const data = querySnapshot.docs.map(doc => ({
             id: doc.id,
-            label: doc.data().label,
+            label: doc.data()?.name || 'No Label',
         }));
+        console.log("On render le item", items)
         setItems(data);
     };
 

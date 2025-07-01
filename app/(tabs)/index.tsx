@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+
 import { Image } from 'expo-image';
 import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
@@ -12,7 +12,6 @@ export default function Index() {
         <Image source={PlaceholderImage} style={styles.image} />
       </View>
       <View style={styles.footerContainer}>
-        <Button label="Start" />
       </View>
       <Text style={styles.text}>Home screen</Text>
       <Link href="/about" style={styles.button}>
