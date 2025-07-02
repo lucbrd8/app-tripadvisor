@@ -1,14 +1,20 @@
 import { db } from '@/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
+
 
 interface Item {
     id: string,
-    label?: string
+    label?: string,
+    cleanRating?: number,
+    location?: string,
+    globalRating?: number,
 }
 
 export default function AboutScreen() {
+  const router = useRouter();
   const [items, setItems] = useState<Item[]>([])
   console.log("On render le component")
   useEffect(() => {
@@ -17,8 +23,11 @@ export default function AboutScreen() {
         const data = querySnapshot.docs.map(doc => ({
             id: doc.id,
             label: doc.data()?.name || 'No Label',
+            cleanRating: doc.data()?.cleanRating || 0,
+            location: doc.data()?.location || 'Non spécifié',
+            globalRating: doc.data()?.globalRating || 'Non spécifié',
         }));
-        console.log("On render le item", items)
+        console.log("On render le item", data);
         setItems(data);
     };
 
@@ -29,15 +38,32 @@ export default function AboutScreen() {
     <View style={styles.screen}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {items.map((item) => (
-            <View key={item.id} style={styles.box}>
-                <Text style={styles.boxText}>{item.label}</Text>
+          <TouchableOpacity 
+            key={item.id} 
+            onPress={() => 
+              router.push({
+                pathname: '/details/[id]',
+                params: {
+                  id: item.id,
+                  label: item.label,
+                  cleanRating: item.cleanRating,
+                  location: item.location,
+                  globalRating: item.globalRating,
+                },
+              })
+            }
+          >
+            <View style={styles.box}>
+              <Text style={styles.titleText}>{item.label}</Text>
+              <Text style={styles.boxText}>Localisation : {item.location}</Text>
+              <Text style={styles.boxText}>Note globale : {item.globalRating}</Text>
             </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </View>
-    
   );
-}
+}  
 
 const styles = StyleSheet.create({
   screen: {
@@ -59,7 +85,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     maxWidth: '100%',
     width: 500,
-    alignItems: 'center',
+    color: '#B9A896',
+    fontWeight: 'bold',
+  },
+  titleText: {
+    color: '#B9A896',
+    fontWeight: 'bold', 
+    textAlign: 'center',
+    fontSize: 18,
+    paddingBottom: 15,
   },
   boxText: {
     color: '#B9A896',
