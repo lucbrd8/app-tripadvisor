@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
 
 export default function DetailScreen() {
-  const { id, label, globalRating, cleanRating, location, isShower } = useLocalSearchParams();
+  const { id, label, globalRating, cleanRating, location, isShower, staffRating, showerRate } = useLocalSearchParams();
   
   let shower: string = 'Non spécifié';
 
@@ -27,12 +27,13 @@ export default function DetailScreen() {
         headerTitleStyle: { fontWeight: 'bold' },
       }}
     />
-      <Text style={styles.title}>Détails</Text>
-      <Text style={styles.text}>Nom : {label}</Text>
-      <Text style={styles.text}>Note : {globalRating}</Text>
-      <Text style={styles.text}>Lieu : {location}</Text>
-      <Text style={styles.text}>Note globale : {globalRating}</Text>
+      <Text style={styles.text}>Name : {label}</Text>
+      <Text style={styles.text}>Global Rate : {globalRating}</Text>
+      <Text style={styles.text}>Localisation : {location}</Text>
+      <Text style={styles.text}>Staff Rate : {staffRating}</Text> 
+      <Text style={styles.text}>Cleaning Rate : {cleanRating}</Text>
       <Text style={styles.text}>Shower ? : {shower}</Text>
+      <Text style={styles.text}>Shower Rate : {showerRate}</Text>
     </View>
     
   );

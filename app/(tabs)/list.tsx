@@ -15,7 +15,6 @@ import {
 interface Item {
   id: string;
   label?: string;
-  cleanRating?: number;
   location?: string;
   globalRating?: number;
 }
@@ -38,7 +37,6 @@ export default function AboutScreen() {
       const data = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         label: doc.data()?.name || "No Label",
-        cleanRating: doc.data()?.cleanRating || 0,
         location: doc.data()?.location || "Non spécifié",
         globalRating: doc.data()?.globalRating || "Non spécifié",
       }));
@@ -61,7 +59,6 @@ export default function AboutScreen() {
                 params: {
                   id: item.id,
                   label: item.label,
-                  cleanRating: item.cleanRating,
                   location: item.location,
                   globalRating: item.globalRating,
                 },
@@ -72,7 +69,7 @@ export default function AboutScreen() {
               <Text style={styles.titleText}>{item.label}</Text>
               <Text style={styles.boxText}>Localisation : {item.location}</Text>
               <Text style={styles.boxText}>
-                Note globale : {item.globalRating}
+                Global Rate : {item.globalRating}
               </Text>
             </View>
           </TouchableOpacity>
