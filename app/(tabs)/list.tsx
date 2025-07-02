@@ -55,7 +55,7 @@ export default function AboutScreen() {
           >
             <View style={styles.box}>
               <Text style={styles.titleText}>{item.label}</Text>
-              <Text style={styles.boxText}>Localisation : {item.location}</Text>
+              <Text style={styles.boxText}>Lieu : {item.location}</Text>
               <Text style={styles.boxText}>Note globale : {item.globalRating}</Text>
             </View>
           </TouchableOpacity>
