@@ -1,9 +1,9 @@
 // app/details/[id].tsx
 import { useLocalSearchParams } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
+import { Stack } from 'expo-router';
 
 export default function DetailScreen() {
-  const { id, label, cleanRating, location, globalRating } = useLocalSearchParams();
   const { id, label, globalRating, cleanRating, location, isShower } = useLocalSearchParams();
   
   let shower: string = 'Non spécifié';
@@ -17,6 +17,16 @@ export default function DetailScreen() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen
+      options={{
+        title: 'Détails',
+        headerStyle: {
+          backgroundColor: '#483C32',
+        },
+        headerTintColor: '#B9A896',
+        headerTitleStyle: { fontWeight: 'bold' },
+      }}
+    />
       <Text style={styles.title}>Détails</Text>
       <Text style={styles.text}>Nom : {label}</Text>
       <Text style={styles.text}>Note : {globalRating}</Text>
@@ -24,6 +34,7 @@ export default function DetailScreen() {
       <Text style={styles.text}>Note globale : {globalRating}</Text>
       <Text style={styles.text}>Shower ? : {shower}</Text>
     </View>
+    
   );
 }
 
