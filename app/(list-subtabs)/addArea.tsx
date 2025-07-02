@@ -1,14 +1,14 @@
 import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import {
-  Button,
+  ScrollView,
   StyleSheet,
   Switch,
   Text,
   TextInput,
-  View,
+  TouchableOpacity,
+  View
 } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import StarRating from "react-native-star-rating-widget";
 import { db } from "../../firebaseConfig";
 
@@ -22,7 +22,7 @@ export default function AddArea() {
   const [staffRating, setstaffRating] = useState(0);
   const addToFirestore = async () => {
     if (!name || !location || globalRating == 0) {
-      alert("Fiels name, location and global rating are required!");
+      alert("Fields name, location and global rating are required!");
       return;
     }
     try {
@@ -42,8 +42,8 @@ export default function AddArea() {
     }
   };
   return (
-    <SafeAreaProvider>
-      <SafeAreaView>
+    <View style={styles.screen}>
+      <ScrollView style={styles.screen}>
         <View
           style={{
             marginTop: 20,
@@ -52,10 +52,9 @@ export default function AddArea() {
             alignItems: "center",
           }}
         >
-          <Text style={styles.title}>Truckadvisor</Text>
+          <Text style={styles.title}>Add a new rest area</Text>
           <Text style={styles.subtitle}>
-            {"\n"}Welcome to Truckadvisor, your help to live an easy life as a
-            trucker!
+            {"\n"}Fill up the form to add a new truck rest area!
           </Text>
         </View>
         <View style={styles.questionBox}>
@@ -107,42 +106,59 @@ export default function AddArea() {
           />
         </View>
         <View style={styles.questionBox}>
-          <Text style={styles.container}>
-            Does the rest area have a shower?
-          </Text>
+          <Text>Does the rest area have a shower?</Text>
           <Switch value={isShower} onValueChange={setisShower} />
-          <View style={styles.questionBox}>
-            {isShower && (
-              <View style={styles.questionBox}>
-                <Text>If yes, what is the rate of the shower?</Text>
-                <StarRating
-                  rating={showerRate}
-                  onChange={setShowerRate}
-                  starSize={25}
-                  enableHalfStar={false}
-                  maxStars={5}
-                />
-              </View>
-            )}
-          </View>
         </View>
-        <Button onPress={addToFirestore} title="Add the truck rest area" />
-      </SafeAreaView>
-    </SafeAreaProvider>
+        {isShower && (
+          <View style={styles.questionBox}>
+            <Text>What is the rate of the shower?</Text>
+            <StarRating
+              rating={showerRate}
+              onChange={setShowerRate}
+              starSize={25}
+              enableHalfStar={false}
+              maxStars={5}
+            />
+          </View>
+        )}
+      </ScrollView>
+
+      <TouchableOpacity style={styles.buttonContainer} onPress={addToFirestore}>
+        <Text style={styles.buttonText}>Add the rest area</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
+  screen: {
+    flex: 1,
+    backgroundColor: "#B9A896",
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 30,
+    alignSelf: "center",
+    borderRadius: 10,
+    backgroundColor: "#65a765",
+    padding: 15,
+    height: 50,
+    width: 200,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 18,
   },
   questionBox: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 20,
-    marginBottom: 10,
+    marginBottom: 30,
+    marginLeft: 20,
+    marginRight: 20,
   },
   subtitle: {
     display: "flex",
@@ -164,5 +180,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     justifyContent: "center",
+    backgroundColor: "white",
   },
 });
