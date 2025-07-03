@@ -1,3 +1,4 @@
+import { router, useLocalSearchParams } from "expo-router";
 import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import {
@@ -7,74 +8,44 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import StarRating from "react-native-star-rating-widget";
 import { db } from "../../firebaseConfig";
 
-export default function AddArea() {
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
+export default function AddReview() {
+  const { id, label } = useLocalSearchParams();
   const [isShower, setisShower] = useState(false);
   const [showerRate, setShowerRate] = useState(false);
   const [globalRating, setglobalRating] = useState(0);
   const [cleanRating, setcleanRating] = useState(0);
   const [staffRating, setstaffRating] = useState(0);
-  const addAreaToFirestore = async () => {
-    if (!name || !location || globalRating == 0) {
-      alert("Fields name, location and global rating are required!");
+  const [comment, setComment] = useState("");
+  const addReviewToFirestore = async () => {
+    if (globalRating == 0) {
+      alert("Global rating is required!");
       return;
     }
     try {
-      const docRef = await addDoc(collection(db, "area"), {
-        name: name,
-        location: location,
+      const docRef = await addDoc(collection(db, 'reviews'), {
+        idArea: id,
         isShower: isShower,
         showerRate: isShower ? showerRate : false,
         globalRating: globalRating,
         cleanRating: cleanRating != 0 ? cleanRating : false,
         staffRating: staffRating != 0 ? staffRating : false,
+        comment: comment,
       });
-      alert("The truck rest area has been added successfully!");
+      router.push({ pathname: "../(tabs)/list" });
+      alert("The review has been added successfully!");
     } catch (e) {
-      console.error("Error adding the area: ", e);
-      alert("An error occurred while adding the area. Please try again.");
+      console.error("Error adding the review: ", e);
+      alert("An error occurred while adding the review. Please try again.");
     }
   };
   return (
     <View style={styles.screen}>
-      <ScrollView style={styles.screen}>
-        <View
-          style={{
-            marginTop: 20,
-            marginBottom: 20,
-            gap: 10,
-            alignItems: "center",
-          }}
-        >
-          <Text style={styles.title}>Add a new rest area</Text>
-          <Text style={styles.subtitle}>
-            {"\n"}Fill up the form to add a new truck rest area!
-          </Text>
-        </View>
-        <View style={styles.questionBox}>
-          <Text>Fill up the name of the rest area</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Name"
-            value={name}
-            onChangeText={setName}
-          />
-        </View>
-        <View style={styles.questionBox}>
-          <Text>Fill up the location of the rest area</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Location"
-            value={location}
-            onChangeText={setLocation}
-          />
-        </View>
+      <ScrollView automaticallyAdjustKeyboardInsets={true}>
         <View style={styles.questionBox}>
           <Text>How good was the area?</Text>
           <StarRating
@@ -121,10 +92,23 @@ export default function AddArea() {
             />
           </View>
         )}
+        <View style={styles.questionBox}>
+          <Text>Leave a comment :</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Your comment"
+            value={comment}
+            onChangeText={setComment}
+            multiline={true}
+            numberOfLines={2}
+          />
+        </View>
       </ScrollView>
-
-      <TouchableOpacity style={styles.buttonContainer} onPress={addAreaToFirestore}>
-        <Text style={styles.buttonText}>Add the rest area</Text>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={addReviewToFirestore}
+      >
+        <Text style={styles.buttonText}>Add the review </Text>
       </TouchableOpacity>
     </View>
   );
@@ -176,6 +160,7 @@ const styles = StyleSheet.create({
     display: "flex",
     height: 30,
     width: 100,
+    margin: 10,
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 5,

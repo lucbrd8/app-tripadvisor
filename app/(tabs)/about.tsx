@@ -46,7 +46,7 @@ export default function AboutScreen() {
           Alert.alert('Connexion réussie', `Bienvenue, ${email}!`);
         })
         .catch((error) => {
-          Alert.alert('Erreur', error.message);
+          Alert.alert('Erreur : utilisateur ou mot de passe incorrect', "Message d'erreur : "+ error.message);
         });
     } else {
       Alert.alert('Erreur', 'Veuillez remplir tous les champs.');
@@ -134,7 +134,7 @@ export default function AboutScreen() {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Mon Compte</Text>
-        <Text style={styles.info}>Email : {user.email}</Text>
+        <Text style={styles.info}>Email : {email}</Text>
         <Text style={styles.info}>Pseudo : {pseudo}</Text>
         <Text style={styles.info}>Date de naissance : {birthDate}</Text>
         <Text style={styles.info}>Pays : {country}</Text>
