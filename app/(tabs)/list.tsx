@@ -2,14 +2,14 @@ import { db } from "@/firebaseConfig";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { collection, getDocs } from "firebase/firestore";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  RefreshControl,
 } from "react-native";
 
 interface Item {
