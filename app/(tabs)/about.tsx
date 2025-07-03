@@ -1,7 +1,9 @@
 import { useRouter } from 'expo-router';
-import { User, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { User, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { db } from '../../firebaseConfig';
 
 export default function AboutScreen() {
   const [email, setEmail] = useState('');
@@ -19,12 +21,23 @@ export default function AboutScreen() {
 
   // Vérifie si un utilisateur est connecté
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser); // Met à jour l'état avec l'utilisateur connecté
-    });
+    const fetchUserProfile = async () => {
+      if (user) {
+        const userDoc = doc(db, 'users', user.uid);
+        const docSnapshot = await getDoc(userDoc);
+        if (docSnapshot.exists()) {
+          const data = docSnapshot.data();
+          setPseudo(data.pseudo || '');
+          setBirthDate(data.birthDate || '');
+          setCountry(data.country || '');
+          setIsProfileComplete(true);
+        }
+      }
+    };
 
-    return () => unsubscribe();
-  }, []);
+    fetchUserProfile();
+  }, [user]);
+  
 
   const handleLogin = () => {
     if (email && password) {
@@ -66,10 +79,20 @@ export default function AboutScreen() {
       });
   };
 
-  const handleSaveProfile = () => {
+  const handleSaveProfile = async () => {
     if (pseudo && birthDate && country){
-      setIsProfileComplete(true);
-      Alert.alert('Profil mis à jour', 'Vos informations ont été enregistrées');
+      try {
+        const userDoc = doc(db, 'users', user?.uid ||'');
+        await setDoc(userDoc, {
+          pseudo,
+          birthDate,
+          country,
+        });
+        setIsProfileComplete(true);
+        Alert.alert('Profil mis à jour', 'vos informations ont été enregistrées');
+      } catch (error) {
+        Alert.alert('Erreur', 'Impossible d’enregistrer les informations')
+      }
     } else {
       Alert.alert('Erreur', 'veuillez remplir tous les champs')
     }
