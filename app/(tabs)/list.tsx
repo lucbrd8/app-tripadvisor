@@ -17,6 +17,9 @@ interface Item {
   label?: string;
   location?: string;
   globalRating?: number;
+  staffRating?: number;
+  cleanRating?: number;
+  showerRate?: number;
 }
 
 export default function AboutScreen() {
@@ -39,6 +42,9 @@ export default function AboutScreen() {
         label: doc.data()?.name || "No Label",
         location: doc.data()?.location || "Non spécifié",
         globalRating: doc.data()?.globalRating || "Non spécifié",
+        staffRating: doc.data()?.staffRating || "Non spécifié", 
+        cleanRating: doc.data()?.cleanRating || "Non spécifié", 
+        showerRate: doc.data()?.showerRate || "Non spécifié",  
       }));
       console.log("On render le item", data);
       setItems(data);
@@ -61,6 +67,9 @@ export default function AboutScreen() {
                   label: item.label,
                   location: item.location,
                   globalRating: item.globalRating,
+                  staffRating: item.staffRating,
+                  cleanRating: item.cleanRating,
+                  showerRate: item.showerRate,
                 },
               })
             }
