@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function DetailScreen() {
   const {
-    id,
+    stationId,
     label,
     globalRating,
     cleanRating,
@@ -46,8 +46,8 @@ export default function DetailScreen() {
         style={styles.buttonContainer}
         onPress={() =>
           router.push({
-            pathname: "../(list-subtabs)/addReview[id]",
-            params: { id, label },
+            pathname: "/(tabs)/list-tab/reviewpage/[reviewId]",
+            params: {stationId : stationId, label : label},
           })
         }
       >

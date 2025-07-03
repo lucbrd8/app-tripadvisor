@@ -11,10 +11,10 @@ import {
   View,
 } from "react-native";
 import StarRating from "react-native-star-rating-widget";
-import { db } from "../../firebaseConfig";
+import { db } from "../../../../firebaseConfig";
 
 export default function AddReview() {
-  const { id, label } = useLocalSearchParams();
+  const { stationId, label } = useLocalSearchParams();
   const [isShower, setisShower] = useState(false);
   const [showerRate, setShowerRate] = useState(false);
   const [globalRating, setglobalRating] = useState(0);
@@ -28,7 +28,7 @@ export default function AddReview() {
     }
     try {
       const docRef = await addDoc(collection(db, 'reviews'), {
-        idArea: id,
+        idArea: stationId,
         isShower: isShower,
         showerRate: isShower ? showerRate : false,
         globalRating: globalRating,
@@ -36,7 +36,9 @@ export default function AddReview() {
         staffRating: staffRating != 0 ? staffRating : false,
         comment: comment,
       });
-      router.push({ pathname: "../(tabs)/list" });
+      router.push({ pathname: "/(tabs)/list-tab"
+, params: { stationId: stationId }
+       });
       alert("The review has been added successfully!");
     } catch (e) {
       console.error("Error adding the review: ", e);
