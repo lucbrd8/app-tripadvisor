@@ -9,9 +9,9 @@ export default function DetailScreen() {
   let shower: string = 'Non spécifié';
 
   if (isShower == 'false') {
-    shower = 'Yes';
-  } else {
     shower = 'No';
+  } else {
+    shower = 'Yes';
   }
     
 
