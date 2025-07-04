@@ -21,6 +21,20 @@ We use Firebase for data storage because it allows us to easily handle the app's
 
 The application is built in three tabs as mentionned in the previous part. The whole application is contained in a (tabs) file to always navigate between the 3 tabs. The home and the about tab contain one screen. The list tab containt 4 screens, which are the list of the rest areas, a screen to add a new area, a screen to see reviews on a precise area, and a screen to add a review to an area. We use the expo-router tool to navigate in the app insted of using Navigation and Stack from react-native, because it was more easy to use and to understand short term. The data storage is made with 3 different databases : one to keep the users information, one which contains the areas, with two fields "name" and "position", and a review database which contains an "areaId" key to link the review to its area, and severals fields to rate the rest area.
 
+## Maps 
+
+At the beginning of the week, we started trying to integrate the expo-maps library, which was recently released in alpha by the Expo team. This library is designed to work on iOS, Android, and Web, which was perfect for our goal of building a cross-platform app. Our objective was to display an interactive map centered on a given location, with a marker and smooth navigation.
+
+I decided to focus only on Apple Maps, which are supported natively on iOS. This would avoid the complexity of Google Maps while still providing a map for iPhone users. I changed the provider to apple, updated the iOS config, and tested with a minimal project. Unfortunately, even this solution didn’t work. Every time I launched the app, I saw an error screen saying “expo maps not recognized,” even though the module was installed and the imports were correct.
+
+After many failed attempts on iOS, I decided to switch to Android. Android is usually more flexible for alpha packages and works better with Expo tools. I installed Android Studio, set up an emulator, and used npx expo run:android to build a Dev Client version of the app. This was necessary because expo-go, the standard client, doesn’t support native libraries like expo-maps.
+
+On Android, I was finally able to run the app without any critical error. When I opened it, a window appeared asking for a Google Maps API key. This was a partial success: it showed that the library was correctly linked to the app, but the API was not configured yet. I still needed to add the API key in the AndroidManifest.xml file and activate the correct services on the Google Cloud Console. Since that required extra time, I put that part on hold.
+
+At the same time, to avoid being stuck, I decided to create a Web version of the map. My goal was to have at least a working demo in the browser. I used react-leaflet, a mature library that easily displays OpenStreetMap maps. I created a MapContainer.web.js component and added a TileLayer and Marker. This allowed me to show a working interactive map on the web, with no complex setup or API key needed. However, I faced an issue with expo-router, which requires that a .web.js file has a fallback file without a platform extension. Because of that, I got an error when loading the page. To fix it, I added an empty MapContainer.js file to serve as a fallback for non-Web platforms. 
+
+Even though I haven’t managed to get everything working yet, I believe this has been a good introduction to the challenges of using experimental packages in a cross-platform project. It gave me hands-on experience with platform-specific configuration, the limitations of Expo Go, and the benefits of using a Dev Client.
+
 ## Dependencies that we used
 
 expo-router
