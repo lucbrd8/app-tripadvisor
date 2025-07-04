@@ -1,6 +1,18 @@
+   a) une description courte et synthétique de votre projet tel que vous l'avez compris et réalisé
+   b) la description de vos choix techniques
+   c) les outils et les librairies, avec leur version, que nous devons utiliser pour exécuter vos projets
+   d) le numéro (hash) du commit contenant la version stable de votre projet
+   
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+
+Our project is to create a mobile app for truck drivers and delivery people, like Tripadvisor.
+Users will be able to log in and create an account (page **Profile**).
+They will see a list of different highway rest areas, with useful information (overall rating, location, showers, staff, etc.) (page **List**).
+Each new user can write a review about a rest area or add a new one to the list.
+The **Home** page also shows a map so users can find rest areas more easily.
+The name of our app is TruckAdvisor.
 
 ## Get started
 
@@ -23,17 +35,11 @@ In the output, you'll find options to open the app in a
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
+We have mainly used the Expo Go app to see the result of our project.
+
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+The file assets contains all the images (map) and icons (logo) we need to do the front of the app. 
 
 ## Learn more
 
