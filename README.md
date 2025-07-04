@@ -19,15 +19,24 @@ The name of our app is TruckAdvisor.
 We chose React Native and Expo Router to build our app because they make development faster and easier. With React Native, we can create one app that works on both iOS and Android, using the same code. Expo gives us helpful tools to test the app quickly and send updates without going through the app stores. Expo Router helps us organize our screens better with simple navigation. These tools let us save time and build a good app more efficiently. 
 We use Firebase for data storage because it allows us to easily handle the app's backend without having to go too deep into the code.
 
+The application is built in three tabs as mentionned in the previous part. The whole application is contained in a (tabs) file to always navigate between the 3 tabs. The home and the about tab contain one screen. The list tab containt 4 screens, which are the list of the rest areas, a screen to add a new area, a screen to see reviews on a precise area, and a screen to add a review to an area. We use the expo-router tool to navigate in the app insted of using Navigation and Stack from react-native, because it was more easy to use and to understand short term. The data storage is made with 3 different databases : one to keep the users information, one which contains the areas, with two fields "name" and "position", and a review database which contains an "areaId" key to link the review to its area, and severals fields to rate the rest area.
+
 ## Dependencies that we used
 
 expo-router
+
 expo-location
+
 react-native
+
 react
+
 firebase
+
 expo-image
+
 expo-splash-screen
+
 expo-icons
 
 ## Get started
