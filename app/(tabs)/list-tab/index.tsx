@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Item {
   stationId: string;
@@ -39,21 +40,19 @@ export default function AboutScreen() {
       const data = querySnapshot.docs.map((doc) => ({
         stationId: doc.id,
         label: doc.data()?.name || "No Label",
-        location: doc.data()?.location || "Non spécifié",
-        globalRating: doc.data()?.globalRating || "Non spécifié",
-        staffRating: doc.data()?.staffRating || "Non spécifié", 
-        cleanRating: doc.data()?.cleanRating || "Non spécifié", 
-        showerRate: doc.data()?.showerRate || "Non spécifié",  
+        location: doc.data()?.location || "Non spécifié"
       }));
       setItems(data);
     };
 
     fetchBoxes();
   }, []);
+  
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.screen}>
-      <ScrollView contentContainerStyle={styles.scrollContainer} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+      <ScrollView contentContainerStyle={[styles.scrollContainer, {paddingTop: insets.top}]} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         {items.map((item) => (
           <TouchableOpacity
             key={item.stationId}
@@ -64,17 +63,13 @@ export default function AboutScreen() {
                   stationId: item.stationId,
                   label: item.label,
                   location: item.location,
-                  globalRating: item.globalRating,
-                  staffRating: item.staffRating,
-                  cleanRating: item.cleanRating,
-                  showerRate: item.showerRate,
                 },
               })
             }
           >
             <View style={styles.box}>
               <Text style={styles.titleText}>{item.label}</Text>
-              <Text style={styles.boxText}>Localisation : {item.location}</Text>
+              <Text style={styles.boxText}>Location : {item.location}</Text>
               <Text style={styles.boxText}>
                 Global Rate : {item.globalRating}
               </Text>
