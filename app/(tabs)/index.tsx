@@ -14,7 +14,7 @@ export default function Index() {
   useEffect(() => {
     // Fonction pour cacher l'écran de démarrage après un délai de 5 secondes
     const prepare = async () => {
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       await SplashScreen.hideAsync();
     };
 
