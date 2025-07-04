@@ -37,7 +37,6 @@ export default function AddReview() {
         comment: comment,
       });
       router.push({ pathname: "/(tabs)/list-tab"
-, params: { stationId: stationId }
        });
       alert("The review has been added successfully!");
     } catch (e) {

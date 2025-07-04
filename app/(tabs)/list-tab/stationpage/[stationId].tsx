@@ -9,7 +9,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { useEffect, useState,useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   RefreshControl,
   ScrollView,
@@ -21,7 +21,7 @@ import {
 import { db } from "../../../../firebaseConfig";
 
 interface Item {
-  docId: string;
+  id: string;
   globalRating?: number | string;
   cleanRating?: number | string;
   staffRating?: number | string;
@@ -45,22 +45,13 @@ export default function DetailScreen() {
     where("idArea", "==", stationId)
   );
   const router = useRouter();
-  const getInformation = async () => {
-    const snapshot = await getAggregateFromServer(reviewQuery, {
-      averageRating: average("globalRating"),
-      countReviews: count(),
-    });
-    return snapshot.data();
-  };
-  const info = getInformation();
-  const globalRating = info.averageRating;
-  const countReviews = info.countReviews;
+
   const [items, setItems] = useState<Item[]>([]);
   useEffect(() => {
     const fetchBoxes = async () => {
       const querySnapshot = await getDocs(reviewQuery);
       const data = querySnapshot.docs.map((doc) => ({
-        docId: doc.id,
+        id: doc.id,
         globalRating: doc.data()?.globalRating || "No Rating",
         cleanRating: doc.data()?.cleanRating || "No Rating",
         staffRating: doc.data()?.staffRating || "No Rating",
@@ -101,14 +92,14 @@ export default function DetailScreen() {
         </View>
         <View style={styles.questionBox}>
           <Text style={styles.text}>Average global Rate : </Text>
-          <Text style={styles.hightext}>{globalRating}</Text>
+          <Text style={styles.hightext}></Text>
         </View>
         <View style={styles.questionBox}>
           <Text style={styles.text}>Number of reviews : </Text>
-          <Text style={styles.hightext}>{countReviews}</Text>
+          <Text style={styles.hightext}></Text>
         </View>
         {items.map((item) => (
-          <View style={styles.box}>
+          <View style={styles.box} key={item.id}>
             <Text style={styles.titleText}>
               Global rating : {item.globalRating}
             </Text>
@@ -187,7 +178,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#65a765",
     padding: 15,
     height: 50,
-    width: 0.8 * window.innerWidth,
+    width: "80%",
   },
   buttonText: {
     color: "white",
@@ -246,3 +237,15 @@ const styles = StyleSheet.create({
         <Text style={styles.hightext}>{showerRate}</Text>
       </View>
       */
+/*
+  const getInformation = async () => {
+    const snapshot = await getAggregateFromServer(reviewQuery, {
+      averageRating: average("globalRating"),
+      countReviews: count(),
+    });
+    return snapshot.data();
+  };
+  const info = getInformation();
+  const globalRating = info.averageRating;
+  const countReviews = info.countReviews;
+  */

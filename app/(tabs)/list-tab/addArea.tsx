@@ -1,4 +1,5 @@
 import { addDoc, collection } from "firebase/firestore";
+import {router} from "expo-router";
 import { useState } from "react";
 import {
   ScrollView,
@@ -13,13 +14,8 @@ import { db } from "../../../firebaseConfig";
 export default function AddArea() {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
-  const [isShower, setisShower] = useState(false);
-  const [showerRate, setShowerRate] = useState(false);
-  const [globalRating, setglobalRating] = useState(0);
-  const [cleanRating, setcleanRating] = useState(0);
-  const [staffRating, setstaffRating] = useState(0);
   const addAreaToFirestore = async () => {
-    if (!name || !location || globalRating == 0) {
+    if (!name || !location) {
       alert("Fields name, location and global rating are required!");
       return;
     }
@@ -27,12 +23,9 @@ export default function AddArea() {
       const docRef = await addDoc(collection(db, "area"), {
         name: name,
         location: location,
-        isShower: isShower,
-        showerRate: isShower ? showerRate : false,
-        globalRating: globalRating,
-        cleanRating: cleanRating != 0 ? cleanRating : false,
-        staffRating: staffRating != 0 ? staffRating : false,
       });
+      router.push({ pathname: "/(tabs)/list-tab"
+             });
       alert("The truck rest area has been added successfully!");
     } catch (e) {
       console.error("Error adding the area: ", e);

@@ -1,7 +1,14 @@
 import { db } from "@/firebaseConfig";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  average,
+  collection,
+  getAggregateFromServer,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   RefreshControl,
@@ -9,9 +16,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 
 interface Item {
   stationId: string;
@@ -30,7 +38,7 @@ export default function AboutScreen() {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-    }, 1000);
+    }, 2000);
   }, []);
   const router = useRouter();
   const [items, setItems] = useState<Item[]>([]);
@@ -40,19 +48,26 @@ export default function AboutScreen() {
       const data = querySnapshot.docs.map((doc) => ({
         stationId: doc.id,
         label: doc.data()?.name || "No Label",
-        location: doc.data()?.location || "Non spécifié"
+        location: doc.data()?.location || "Non spécifié",
       }));
       setItems(data);
     };
 
     fetchBoxes();
   }, []);
-  
-  const insets = useSafeAreaInsets();
 
+  const insets = useSafeAreaInsets();
   return (
     <View style={styles.screen}>
-      <ScrollView contentContainerStyle={[styles.scrollContainer, {paddingTop: insets.top}]} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+      <ScrollView
+        contentContainerStyle={[
+          styles.scrollContainer,
+          { paddingTop: insets.top },
+        ]}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {items.map((item) => (
           <TouchableOpacity
             key={item.stationId}
@@ -70,14 +85,15 @@ export default function AboutScreen() {
             <View style={styles.box}>
               <Text style={styles.titleText}>{item.label}</Text>
               <Text style={styles.boxText}>Location : {item.location}</Text>
-              <Text style={styles.boxText}>
-                Global Rate : {item.globalRating}
-              </Text>
+              <Text style={styles.boxText}>Global Rate : not already available</Text>
             </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.floatingButton} onPress={() => router.push('/(tabs)/list-tab/addArea')}>
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() => router.push("/(tabs)/list-tab/addArea")}
+      >
         <Ionicons name="add" size={32} color="white" />
       </TouchableOpacity>
     </View>
@@ -108,15 +124,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   floatingButton: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 24,
     right: 24,
-    backgroundColor: '#65a765',
+    backgroundColor: "#65a765",
     width: 64,
     height: 64,
     borderRadius: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   titleText: {
     color: "#B9A896",
@@ -142,3 +158,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
+
+/* fonction pour calculer la moyenne des avis
+
+async function getMoyenne(idarea: string) {
+  try {
+    const reviewRef = collection(db, "reviews");
+    const q = query(reviewRef, where("idArea", "==", idarea));
+    const snapshot = await getAggregateFromServer(q, {
+      moyenne: average("globalRating"),
+    });
+    const moyenne = snapshot.data().moyenne;
+    return moyenne;
+  } catch (error) {
+    console.log(error);
+  }
+}
+Cette fonction retourne une promesse, et nous n'avons pas réussi à afficher la valeur de cette promesse dans l'application.
+  */
