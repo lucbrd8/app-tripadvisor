@@ -20,34 +20,44 @@ export default function AboutScreen() {
   const router = useRouter();
 
   // Vérifie si un utilisateur est connecté
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (user) {
-        const userDoc = doc(db, 'users', user.uid);
-        const docSnapshot = await getDoc(userDoc);
-        if (docSnapshot.exists()) {
-          const data = docSnapshot.data();
-          setPseudo(data.pseudo || '');
-          setBirthDate(data.birthDate || '');
-          setCountry(data.country || '');
-          setIsProfileComplete(true);
-        }
+const fetchUserProfile = async () => {
+  if (user) {
+    try {
+      const userDoc = doc(db, 'users', user.uid);
+      const docSnapshot = await getDoc(userDoc);
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        setPseudo(data.pseudo || '');
+        setBirthDate(data.birthDate || '');
+        setCountry(data.country || '');
+        setIsProfileComplete(true); // Met à jour l'état pour indiquer que le profil est complet
+      } else {
+        setIsProfileComplete(false); // Le profil n'est pas encore complété
       }
-    };
+    } catch (error) {
+      console.log("Erreur lors de la récupération du profil :", error);
+      Alert.alert('Erreur', 'Impossible de récupérer les informations du profil.');
+    }
+  }
+};
 
-    fetchUserProfile();
-  }, [user]);
+useEffect(() => {
+  fetchUserProfile();
+}, [user]);
   
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (email && password) {
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          Alert.alert('Connexion réussie', `Bienvenue, ${email}!`);
-        })
-        .catch((error) => {
-          Alert.alert('Erreur : utilisateur ou mot de passe incorrect', "Message d'erreur : "+ error.message);
-        });
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const loggedInUser = userCredential.user;
+        setUser(loggedInUser); // Met à jour l'état avec l'utilisateur connecté
+        await fetchUserProfile(); // Récupère les données de profil après la mise à jour de l'utilisateur
+        Alert.alert('Connexion réussie', `Bienvenue, ${email}!`);
+      } catch (error) {
+        console.log("Erreur lors de la connexion :", error);
+        Alert.alert('Erreur : utilisateur ou mot de passe incorrect', "Message d'erreur : " + error.message);
+      }
     } else {
       Alert.alert('Erreur', 'Veuillez remplir tous les champs.');
     }
