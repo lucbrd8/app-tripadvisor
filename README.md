@@ -3,7 +3,7 @@
    c) les outils et les librairies, avec leur version, que nous devons utiliser pour exécuter vos projets
    d) le numéro (hash) du commit contenant la version stable de votre projet
    
-# Welcome to your Expo app 👋
+# Welcome to our Truckadvisor application 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
@@ -18,6 +18,17 @@ The name of our app is TruckAdvisor.
 
 We chose React Native and Expo Router to build our app because they make development faster and easier. With React Native, we can create one app that works on both iOS and Android, using the same code. Expo gives us helpful tools to test the app quickly and send updates without going through the app stores. Expo Router helps us organize our screens better with simple navigation. These tools let us save time and build a good app more efficiently. 
 We use Firebase for data storage because it allows us to easily handle the app's backend without having to go too deep into the code.
+
+## Dependencies that we used
+
+expo-router
+expo-location
+react-native
+react
+firebase
+expo-image
+expo-splash-screen
+expo-icons
 
 ## Get started
 
