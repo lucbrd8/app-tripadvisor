@@ -17,9 +17,10 @@ export default function TabLayout() {
         }}
     >
       <Tabs.Screen 
-        name="list" 
+        name="list-tab" 
         options={{ 
             title: 'List',
+            headerShown: false,
             tabBarIcon: ({color, focused}) => (
                 <Ionicons name={'reorder-three'} color={color} size={24} />
             ),

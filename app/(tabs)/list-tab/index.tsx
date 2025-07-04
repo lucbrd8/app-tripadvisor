@@ -9,11 +9,12 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Item {
-  id: string;
+  stationId: string;
   label?: string;
   location?: string;
   globalRating?: number;
@@ -33,50 +34,42 @@ export default function AboutScreen() {
   }, []);
   const router = useRouter();
   const [items, setItems] = useState<Item[]>([]);
-  console.log("On render le component");
   useEffect(() => {
     const fetchBoxes = async () => {
       const querySnapshot = await getDocs(collection(db, "area"));
       const data = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
+        stationId: doc.id,
         label: doc.data()?.name || "No Label",
-        location: doc.data()?.location || "Non spécifié",
-        globalRating: doc.data()?.globalRating || "Non spécifié",
-        staffRating: doc.data()?.staffRating || "Non spécifié", 
-        cleanRating: doc.data()?.cleanRating || "Non spécifié", 
-        showerRate: doc.data()?.showerRate || "Non spécifié",  
+        location: doc.data()?.location || "Non spécifié"
       }));
-      console.log("On render le item", data);
       setItems(data);
     };
 
     fetchBoxes();
   }, []);
+  
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.screen}>
-      <ScrollView contentContainerStyle={styles.scrollContainer} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+      <ScrollView contentContainerStyle={[styles.scrollContainer, {paddingTop: insets.top}]} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         {items.map((item) => (
           <TouchableOpacity
-            key={item.id}
+            key={item.stationId}
             onPress={() =>
               router.push({
-                pathname: "/details/[id]",
+                pathname: "/(tabs)/list-tab/stationpage/[stationId]",
                 params: {
-                  id: item.id,
+                  stationId: item.stationId,
                   label: item.label,
                   location: item.location,
-                  globalRating: item.globalRating,
-                  staffRating: item.staffRating,
-                  cleanRating: item.cleanRating,
-                  showerRate: item.showerRate,
                 },
               })
             }
           >
             <View style={styles.box}>
               <Text style={styles.titleText}>{item.label}</Text>
-              <Text style={styles.boxText}>Localisation : {item.location}</Text>
+              <Text style={styles.boxText}>Location : {item.location}</Text>
               <Text style={styles.boxText}>
                 Global Rate : {item.globalRating}
               </Text>
@@ -84,7 +77,7 @@ export default function AboutScreen() {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.floatingButton} onPress={() => router.push("/addArea")}>
+      <TouchableOpacity style={styles.floatingButton} onPress={() => router.push('/(tabs)/list-tab/addArea')}>
         <Ionicons name="add" size={32} color="white" />
       </TouchableOpacity>
     </View>

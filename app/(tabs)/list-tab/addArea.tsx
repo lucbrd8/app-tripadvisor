@@ -3,14 +3,12 @@ import { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
-  Switch,
   Text,
   TextInput,
   TouchableOpacity,
   View
 } from "react-native";
-import StarRating from "react-native-star-rating-widget";
-import { db } from "../../firebaseConfig";
+import { db } from "../../../firebaseConfig";
 
 export default function AddArea() {
   const [name, setName] = useState("");
@@ -75,57 +73,14 @@ export default function AddArea() {
             onChangeText={setLocation}
           />
         </View>
-        <View style={styles.questionBox}>
-          <Text>How good was the area?</Text>
-          <StarRating
-            rating={globalRating}
-            onChange={setglobalRating}
-            starSize={25}
-            enableHalfStar={false}
-            maxStars={5}
-          />
-        </View>
-        <View style={styles.questionBox}>
-          <Text>How clean was the rest area?</Text>
-          <StarRating
-            rating={cleanRating}
-            onChange={setcleanRating}
-            starSize={25}
-            enableHalfStar={false}
-            maxStars={5}
-          />
-        </View>
-        <View style={styles.questionBox}>
-          <Text>How friendly were the staff?</Text>
-          <StarRating
-            rating={staffRating}
-            onChange={setstaffRating}
-            starSize={25}
-            enableHalfStar={false}
-            maxStars={5}
-          />
-        </View>
-        <View style={styles.questionBox}>
-          <Text>Does the rest area have a shower?</Text>
-          <Switch value={isShower} onValueChange={setisShower} />
-        </View>
-        {isShower && (
-          <View style={styles.questionBox}>
-            <Text>What is the rate of the shower?</Text>
-            <StarRating
-              rating={showerRate}
-              onChange={setShowerRate}
-              starSize={25}
-              enableHalfStar={false}
-              maxStars={5}
-            />
-          </View>
-        )}
+        
       </ScrollView>
-
-      <TouchableOpacity style={styles.buttonContainer} onPress={addAreaToFirestore}>
-        <Text style={styles.buttonText}>Add the rest area</Text>
-      </TouchableOpacity>
+      <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={addAreaToFirestore}
+        >
+          <Text style={styles.buttonText}>Add the rest area</Text>
+        </TouchableOpacity>
     </View>
   );
 }
