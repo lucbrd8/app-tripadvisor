@@ -1,4 +1,4 @@
-   a) une description courte et synthétique de votre projet tel que vous l'avez compris et réalisé
+
    b) la description de vos choix techniques
    c) les outils et les librairies, avec leur version, que nous devons utiliser pour exécuter vos projets
    d) le numéro (hash) du commit contenant la version stable de votre projet
@@ -13,6 +13,10 @@ They will see a list of different highway rest areas, with useful information (o
 Each new user can write a review about a rest area or add a new one to the list.
 The **Home** page also shows a map so users can find rest areas more easily.
 The name of our app is TruckAdvisor.
+
+## Technical choices
+
+We chose React Native and Expo Router to build our app because they make development faster and easier. With React Native, we can create one app that works on both iOS and Android, using the same code. Expo gives us helpful tools to test the app quickly and send updates without going through the app stores. Expo Router helps us organize our screens better with simple navigation. These tools let us save time and build a good app more efficiently.
 
 ## Get started
 
