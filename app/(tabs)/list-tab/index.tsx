@@ -9,11 +9,11 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 interface Item {
-  id: string;
+  stationId: string;
   label?: string;
   location?: string;
   globalRating?: number;
@@ -33,12 +33,11 @@ export default function AboutScreen() {
   }, []);
   const router = useRouter();
   const [items, setItems] = useState<Item[]>([]);
-  console.log("On render le component");
   useEffect(() => {
     const fetchBoxes = async () => {
       const querySnapshot = await getDocs(collection(db, "area"));
       const data = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
+        stationId: doc.id,
         label: doc.data()?.name || "No Label",
         location: doc.data()?.location || "Non spécifié",
         globalRating: doc.data()?.globalRating || "Non spécifié",
@@ -46,7 +45,6 @@ export default function AboutScreen() {
         cleanRating: doc.data()?.cleanRating || "Non spécifié", 
         showerRate: doc.data()?.showerRate || "Non spécifié",  
       }));
-      console.log("On render le item", data);
       setItems(data);
     };
 
@@ -58,12 +56,12 @@ export default function AboutScreen() {
       <ScrollView contentContainerStyle={styles.scrollContainer} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         {items.map((item) => (
           <TouchableOpacity
-            key={item.id}
+            key={item.stationId}
             onPress={() =>
               router.push({
-                pathname: "/details/[id]",
+                pathname: "/(tabs)/list-tab/stationpage/[stationId]",
                 params: {
-                  id: item.id,
+                  stationId: item.stationId,
                   label: item.label,
                   location: item.location,
                   globalRating: item.globalRating,
@@ -84,7 +82,7 @@ export default function AboutScreen() {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <TouchableOpacity style={styles.floatingButton} onPress={() => router.push("/addArea")}>
+      <TouchableOpacity style={styles.floatingButton} onPress={() => router.push('/(tabs)/list-tab/addArea')}>
         <Ionicons name="add" size={32} color="white" />
       </TouchableOpacity>
     </View>
